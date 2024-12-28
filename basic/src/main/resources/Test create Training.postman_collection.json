@@ -1,0 +1,263 @@
+{
+	"info": {
+		"_postman_id": "f05a42c9-8433-4551-933c-b879b5292342",
+		"name": "Test create Training",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "24949621"
+	},
+	"item": [
+		{
+			"name": "Login Kathleen.Carr",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "Kathleen.Carr",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "7545019305",
+							"type": "text"
+						}
+					]
+				},
+				"url": "http://localhost:8080/login"
+			},
+			"response": []
+		},
+		{
+			"name": "Get trainer info Kathleen.Carr",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJjbGllbnRUeXBlIjoidHJhaW5lciIsInVzZXJJRCI6IjIiLCJzdWIiOiJLYXRobGVlbi5DYXJyIiwiaWF0IjoxNzM1MTMyNTAzLCJleHAiOjE3MzUxMzMxMDN9.-kMufnAL2ncskugboceexLO0Gdt83OpdiZC-RGcutZA"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "Kathleen.Carr",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "password",
+							"value": "7545019305",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/trainer?username=Kathleen.Carr",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"trainer"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "Kathleen.Carr"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login Dave.Batista",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "Dave.Batista",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "1234567895",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"login"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "Dave.Batista",
+							"disabled": true
+						},
+						{
+							"key": "password",
+							"value": "123",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get trainee info Dave.Batista",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJjbGllbnRUeXBlIjoidHJhaW5lZSIsInVzZXJJRCI6IjYiLCJzdWIiOiJEYXZlLkJhdGlzdGEiLCJpYXQiOjE3MzUxMzI2OTksImV4cCI6MTczNTEzMzI5OX0.f-pkqpYHxqot4medZLiLazNBPmr1VYErUxFExYoSN6M"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "Dave.Batista",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "password",
+							"value": "1234567895",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/trainee?username=Dave.Batista",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"trainee"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "Dave.Batista"
+						},
+						{
+							"key": "password",
+							"value": "123",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Trainee Dave.Batista Trainings List",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJjbGllbnRUeXBlIjoidHJhaW5lZSIsInVzZXJJRCI6IjYiLCJzdWIiOiJEYXZlLkJhdGlzdGEiLCJpYXQiOjE3MzUxMzMxODcsImV4cCI6MTczNTEzMzc4N30.17QiBQm96pg5dnNAo5PGnZTyZHP1wdmBZ-Uwl0UnIpM"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/trainee/trainings?username=Dave.Batista",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"trainee",
+						"trainings"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "Dave.Batista"
+						},
+						{
+							"key": "fromDate",
+							"value": "2024-10-21",
+							"disabled": true
+						},
+						{
+							"key": "toDate",
+							"value": "2024-11-21",
+							"disabled": true
+						},
+						{
+							"key": "trainerName",
+							"value": "Ward",
+							"disabled": true
+						},
+						{
+							"key": "trainingType",
+							"value": "yoga",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create training",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJjbGllbnRUeXBlIjoidHJhaW5lZSIsInVzZXJJRCI6IjYiLCJzdWIiOiJEYXZlLkJhdGlzdGEiLCJpYXQiOjE3MzUxMzMxODcsImV4cCI6MTczNTEzMzc4N30.17QiBQm96pg5dnNAo5PGnZTyZHP1wdmBZ-Uwl0UnIpM"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"trainingName\": \"box\",\r\n        \"trainingDay\": \"2024-12-22\",\r\n        \"trainingType\": \"fitness\",\r\n        \"trainingDuration\": 120,\r\n        \"trainerUsername\": \"Kathleen.Carr\",\r\n        \"traineeUsername\": \"Dave.Batista\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/training"
+			},
+			"response": []
+		}
+	]
+}
