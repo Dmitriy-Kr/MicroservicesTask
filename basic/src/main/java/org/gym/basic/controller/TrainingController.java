@@ -8,11 +8,9 @@ import org.gym.basic.service.ServiceException;
 import org.gym.basic.service.TrainingService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.gym.workload.dto.WorkloadRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import static org.gym.basic.utility.Validation.*;
 
@@ -20,8 +18,8 @@ import static org.gym.basic.utility.Validation.*;
 @RequestMapping("/training")
 public class TrainingController {
 
-    private TrainingService trainingService;
-    private WorkloadClient workloadClient;
+    private final TrainingService trainingService;
+    private final WorkloadClient workloadClient;
 
     public TrainingController(TrainingService trainingService, WorkloadClient workloadClient) {
         this.trainingService = trainingService;
@@ -29,8 +27,8 @@ public class TrainingController {
     }
 
     @PostMapping
-    @ResponseBody
     @Operation(summary = "Create new Training")
+    @ResponseStatus(HttpStatus.OK)
     public void create(@RequestBody TrainingDto trainingDto) throws InvalidDataException, ServiceException {
         validateLogin(trainingDto.getTraineeUsername());
 
@@ -40,17 +38,32 @@ public class TrainingController {
 
         Training training = trainingService.create(trainingDto);
 
+        workloadClient.process(createRequest(training, WorkloadRequest.ActionType.ADD));
+    }
+
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Delete Training")
+    @ResponseStatus(HttpStatus.OK)
+    public void delete(@PathVariable("id") long id) throws ServiceException {
+        Training training = trainingService.getTrainingById(id);
+        WorkloadRequest workloadRequest = createRequest(training, WorkloadRequest.ActionType.DELETE);
+        trainingService.deleteTrainingById(id);
+        workloadClient.process(workloadRequest);
+    }
+
+    private WorkloadRequest createRequest(Training training, WorkloadRequest.ActionType actionType) {
         WorkloadRequest workloadRequest = new WorkloadRequest();
 
-        workloadRequest.setActionType(WorkloadRequest.ActionType.ADD);
+        workloadRequest.setActionType(actionType);
         workloadRequest.setTrainerUsername(training.getTrainer().getUser().getUsername());
         workloadRequest.setTrainerFirstName(training.getTrainer().getUser().getFirstname());
         workloadRequest.setTrainerLastName(training.getTrainer().getUser().getLastname());
-        workloadRequest.setIsActive(training.getTrainer().getUser().isActive());
+        workloadRequest.setActive(training.getTrainer().getUser().isActive());
         workloadRequest.setTrainingDuration(training.getTrainingDuration());
         workloadRequest.setTrainingDate(training.getTrainingDay());
 
-        workloadClient.process(workloadRequest);
+        System.out.println("Status " + workloadRequest.isActive());
 
+        return workloadRequest;
     }
 }

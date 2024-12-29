@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "f05a42c9-8433-4551-933c-b879b5292342",
-		"name": "Test create Training",
+		"name": "Test create/delete Training",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
 		"_exporter_id": "24949621"
 	},
@@ -39,7 +39,7 @@
 				"auth": {
 					"type": "bearer",
 					"bearer": {
-						"token": "eyJhbGciOiJIUzI1NiJ9.eyJjbGllbnRUeXBlIjoidHJhaW5lciIsInVzZXJJRCI6IjIiLCJzdWIiOiJLYXRobGVlbi5DYXJyIiwiaWF0IjoxNzM1MTMyNTAzLCJleHAiOjE3MzUxMzMxMDN9.-kMufnAL2ncskugboceexLO0Gdt83OpdiZC-RGcutZA"
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJjbGllbnRUeXBlIjoidHJhaW5lciIsInVzZXJJRCI6IjIiLCJzdWIiOiJLYXRobGVlbi5DYXJyIiwiaWF0IjoxNzM1NTAyODY3LCJleHAiOjE3MzU1MDM0Njd9.Dkw7AJebay5XZ7VZfwj3AvVS3lszHauwtEDITb8achQ"
 					}
 				},
 				"method": "GET",
@@ -136,7 +136,7 @@
 				"auth": {
 					"type": "bearer",
 					"bearer": {
-						"token": "eyJhbGciOiJIUzI1NiJ9.eyJjbGllbnRUeXBlIjoidHJhaW5lZSIsInVzZXJJRCI6IjYiLCJzdWIiOiJEYXZlLkJhdGlzdGEiLCJpYXQiOjE3MzUxMzI2OTksImV4cCI6MTczNTEzMzI5OX0.f-pkqpYHxqot4medZLiLazNBPmr1VYErUxFExYoSN6M"
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJjbGllbnRUeXBlIjoidHJhaW5lZSIsInVzZXJJRCI6IjYiLCJzdWIiOiJEYXZlLkJhdGlzdGEiLCJpYXQiOjE3MzU1MDMwNTQsImV4cCI6MTczNTUwMzY1NH0.MhWG5Go67Tlrwr5X9_dwh15I2Lgyf13K-P9Q7IsgHfc"
 					}
 				},
 				"method": "GET",
@@ -189,7 +189,7 @@
 				"auth": {
 					"type": "bearer",
 					"bearer": {
-						"token": "eyJhbGciOiJIUzI1NiJ9.eyJjbGllbnRUeXBlIjoidHJhaW5lZSIsInVzZXJJRCI6IjYiLCJzdWIiOiJEYXZlLkJhdGlzdGEiLCJpYXQiOjE3MzUxMzMxODcsImV4cCI6MTczNTEzMzc4N30.17QiBQm96pg5dnNAo5PGnZTyZHP1wdmBZ-Uwl0UnIpM"
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJjbGllbnRUeXBlIjoidHJhaW5lZSIsInVzZXJJRCI6IjYiLCJzdWIiOiJEYXZlLkJhdGlzdGEiLCJpYXQiOjE3MzU1MDMwNTQsImV4cCI6MTczNTUwMzY1NH0.MhWG5Go67Tlrwr5X9_dwh15I2Lgyf13K-P9Q7IsgHfc"
 					}
 				},
 				"method": "GET",
@@ -241,7 +241,7 @@
 				"auth": {
 					"type": "bearer",
 					"bearer": {
-						"token": "eyJhbGciOiJIUzI1NiJ9.eyJjbGllbnRUeXBlIjoidHJhaW5lZSIsInVzZXJJRCI6IjYiLCJzdWIiOiJEYXZlLkJhdGlzdGEiLCJpYXQiOjE3MzUxMzMxODcsImV4cCI6MTczNTEzMzc4N30.17QiBQm96pg5dnNAo5PGnZTyZHP1wdmBZ-Uwl0UnIpM"
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJjbGllbnRUeXBlIjoidHJhaW5lciIsInVzZXJJRCI6IjIiLCJzdWIiOiJLYXRobGVlbi5DYXJyIiwiaWF0IjoxNzM1NTAyODY3LCJleHAiOjE3MzU1MDM0Njd9.Dkw7AJebay5XZ7VZfwj3AvVS3lszHauwtEDITb8achQ"
 					}
 				},
 				"method": "POST",
@@ -256,6 +256,21 @@
 					}
 				},
 				"url": "http://localhost:8080/training"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete training",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJjbGllbnRUeXBlIjoidHJhaW5lciIsInVzZXJJRCI6IjIiLCJzdWIiOiJLYXRobGVlbi5DYXJyIiwiaWF0IjoxNzM1NTAyODY3LCJleHAiOjE3MzU1MDM0Njd9.Dkw7AJebay5XZ7VZfwj3AvVS3lszHauwtEDITb8achQ"
+					}
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": "http://localhost:8080/training/9"
 			},
 			"response": []
 		}

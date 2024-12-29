@@ -30,7 +30,7 @@ public class TrainerWorkloadController {
 
     @GetMapping
     @ResponseBody
-    public Long getDuration(@RequestParam("username") String username,
+    public int getDuration(@RequestParam("username") String username,
                             @RequestParam("year") Integer year,
                             @RequestParam("month") Integer month) {
 

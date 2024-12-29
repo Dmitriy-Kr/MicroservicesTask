@@ -54,4 +54,13 @@ public class TrainingService {
             throw new ServiceException("Fail to create training with trainingName " + trainingDto.getTrainingName(), e);
         }
     }
+
+    public Training getTrainingById(long id) throws ServiceException {
+        return trainingRepository.findById(id)
+                .orElseThrow(() -> new ServiceException("Fail to find training. No such training present in DB"));
+    }
+
+    public void deleteTrainingById(long id){
+        trainingRepository.deleteById(id);
+    }
 }

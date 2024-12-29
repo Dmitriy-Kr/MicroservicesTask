@@ -146,7 +146,6 @@ public class TraineeController {
     }
 
     @DeleteMapping
-    @ResponseBody
     @Operation(summary = "Delete Trainee Profile")
     public void delete(@RequestParam("username") String username) throws ServiceException, InvalidDataException {
 

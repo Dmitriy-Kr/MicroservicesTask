@@ -15,7 +15,7 @@ public class WorkloadRequest {
     @NotBlank(message = "Lastname is mandatory")
     private String trainerLastName;
 
-    private boolean isActive;
+    private boolean active;
 
     @NotNull
     private Date trainingDate;
@@ -40,7 +40,7 @@ public class WorkloadRequest {
         this.trainerUsername = trainerUsername;
         this.trainerFirstName = trainerFirstName;
         this.trainerLastName = trainerLastName;
-        this.isActive = isActive;
+        this.active = isActive;
         this.trainingDate = trainingDate;
         this.trainingDuration = trainingDuration;
         this.actionType = actionType;
@@ -72,11 +72,11 @@ public class WorkloadRequest {
     }
 
     public boolean isActive() {
-        return isActive;
+        return active;
     }
 
-    public void setIsActive(boolean active) {
-        isActive = active;
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public Date getTrainingDate() {
@@ -110,7 +110,7 @@ public class WorkloadRequest {
                 "trainerUsername='" + trainerUsername + '\'' +
                 ", trainerFirstName='" + trainerFirstName + '\'' +
                 ", trainerLastName='" + trainerLastName + '\'' +
-                ", isActive=" + isActive +
+                ", isActive=" + active +
                 ", trainingDate=" + trainingDate +
                 ", trainingDuration=" + trainingDuration +
                 ", actionType=" + actionType +
