@@ -6,10 +6,12 @@ import org.gym.basic.dto.TrainerTrainingDto;
 import org.gym.basic.entity.Trainer;
 import org.gym.basic.exception.InvalidDataException;
 import org.gym.basic.exception.NoResourcePresentException;
+import org.gym.basic.feignclient.WorkloadClient;
 import org.gym.basic.service.ServiceException;
 import org.gym.basic.service.TrainerService;
 import org.gym.basic.utility.MappingUtils;
 import io.swagger.v3.oas.annotations.Operation;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,10 +28,14 @@ import static org.gym.basic.utility.Validation.validateDate;
 @Controller
 @RequestMapping("/trainer")
 public class TrainerController {
-    private TrainerService trainerService;
+    private final TrainerService trainerService;
+    private final WorkloadClient workloadClient;
+    private final CircuitBreakerFactory circuitBreakerFactory;
 
-    public TrainerController(TrainerService trainerService) {
+    public TrainerController(TrainerService trainerService, WorkloadClient workloadClient, CircuitBreakerFactory circuitBreakerFactory) {
         this.trainerService = trainerService;
+        this.workloadClient = workloadClient;
+        this.circuitBreakerFactory = circuitBreakerFactory;
     }
 
     @GetMapping
@@ -38,12 +44,12 @@ public class TrainerController {
     public TrainerDto findByUsername(@RequestParam("username") String username) throws ServiceException, NoResourcePresentException, InvalidDataException {
         Optional<Trainer> trainer;
         validateLogin(username);
-            trainer = trainerService.findByUsername(username);
-            if (trainer.isPresent()) {
-                return mapToTrainerDto(trainer.get());
-            } else {
-                throw new NoResourcePresentException("Cannot find trainer with username " + username);
-            }
+        trainer = trainerService.findByUsername(username);
+        if (trainer.isPresent()) {
+            return mapToTrainerDto(trainer.get());
+        } else {
+            throw new NoResourcePresentException("Cannot find trainer with username " + username);
+        }
     }
 
     @PostMapping
@@ -61,22 +67,21 @@ public class TrainerController {
     public TrainerDto update(@PathVariable Long id, @RequestBody TrainerDto trainerDto) throws ServiceException, InvalidDataException {
 
         validateLogin(trainerDto.getUsername());
-            validateName(trainerDto.getFirstname());
-            validateName(trainerDto.getLastname());
-            Trainer trainer = mapToTrainer(trainerDto);
-            trainer.setId(id);
-            return mapToTrainerDto(trainerService.update(trainer).orElseThrow(() -> new ServiceException("Update trainer failed")));
+        validateName(trainerDto.getFirstname());
+        validateName(trainerDto.getLastname());
+        Trainer trainer = mapToTrainer(trainerDto);
+        trainer.setId(id);
+        return mapToTrainerDto(trainerService.update(trainer).orElseThrow(() -> new ServiceException("Update trainer failed")));
     }
 
     @PatchMapping("/{id}/status")
-    @ResponseBody
     @Operation(summary = "Activate/De-Activate Trainer")
     public void changeStatus(@PathVariable Long id, @RequestBody TrainerDto trainerDto) throws ServiceException, InvalidDataException {
 
         validateLogin(trainerDto.getUsername());
-            Trainer trainer = mapToTrainer(trainerDto);
-            trainer.setId(id);
-            trainerService.changeStatus(trainer).orElseThrow(() -> new ServiceException("Cannot change trainer status"));
+        Trainer trainer = mapToTrainer(trainerDto);
+        trainer.setId(id);
+        trainerService.changeStatus(trainer).orElseThrow(() -> new ServiceException("Cannot change trainer status"));
     }
 
     @GetMapping("/trainings")
@@ -89,27 +94,41 @@ public class TrainerController {
 
         validateLogin(username);
 
-            Date fromDate = null;
-            Date toDate = null;
+        Date fromDate = null;
+        Date toDate = null;
 
-            if (fromDateParameter != null) {
-                if (validateDate(fromDateParameter)) {
-                    fromDate = Date.valueOf(LocalDate.parse(fromDateParameter));
-                }
+        if (fromDateParameter != null) {
+            if (validateDate(fromDateParameter)) {
+                fromDate = Date.valueOf(LocalDate.parse(fromDateParameter));
             }
+        }
 
-            if (toDateParameter != null) {
-                if (validateDate(toDateParameter)) {
-                    toDate = Date.valueOf(LocalDate.parse(toDateParameter));
-                }
+        if (toDateParameter != null) {
+            if (validateDate(toDateParameter)) {
+                toDate = Date.valueOf(LocalDate.parse(toDateParameter));
             }
+        }
 
-            if (traineeName != null) {
-                validateName(traineeName);
-            }
+        if (traineeName != null) {
+            validateName(traineeName);
+        }
 
-            return trainerService.getTrainings(username, fromDate, toDate, traineeName).stream()
-                    .map(MappingUtils::mapToTrainerTrainingDto)
-                    .collect(Collectors.toList());
+        return trainerService.getTrainings(username, fromDate, toDate, traineeName).stream()
+                .map(MappingUtils::mapToTrainerTrainingDto)
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/workload")
+    @ResponseBody
+    @Operation(summary = "Get trainer workload")
+    public Integer getWorkload(@RequestParam("username") String username,
+                           @RequestParam("year") Integer year,
+                           @RequestParam("month") Integer month) throws ServiceException, NoResourcePresentException, InvalidDataException {
+
+        return circuitBreakerFactory.create("slow").run(() -> workloadClient.getDuration(username, year, month), t -> {
+            Integer fallback = -1000000;
+            return fallback;
+        });
+
     }
 }
