@@ -39,7 +39,7 @@
 				"auth": {
 					"type": "bearer",
 					"bearer": {
-						"token": "eyJhbGciOiJIUzI1NiJ9.eyJjbGllbnRUeXBlIjoidHJhaW5lciIsInVzZXJJRCI6IjIiLCJzdWIiOiJLYXRobGVlbi5DYXJyIiwiaWF0IjoxNzM1NTAyODY3LCJleHAiOjE3MzU1MDM0Njd9.Dkw7AJebay5XZ7VZfwj3AvVS3lszHauwtEDITb8achQ"
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJjbGllbnRUeXBlIjoidHJhaW5lciIsInVzZXJJRCI6IjIiLCJzdWIiOiJLYXRobGVlbi5DYXJyIiwiaWF0IjoxNzM1NTYxNjcyLCJleHAiOjE3MzU1NjIyNzJ9.S7x0UC1CJgHAwgeLoz-79HDlS00r4Typf-uYjYIfvkI"
 					}
 				},
 				"method": "GET",
@@ -189,7 +189,7 @@
 				"auth": {
 					"type": "bearer",
 					"bearer": {
-						"token": "eyJhbGciOiJIUzI1NiJ9.eyJjbGllbnRUeXBlIjoidHJhaW5lZSIsInVzZXJJRCI6IjYiLCJzdWIiOiJEYXZlLkJhdGlzdGEiLCJpYXQiOjE3MzU1MDMwNTQsImV4cCI6MTczNTUwMzY1NH0.MhWG5Go67Tlrwr5X9_dwh15I2Lgyf13K-P9Q7IsgHfc"
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJjbGllbnRUeXBlIjoidHJhaW5lZSIsInVzZXJJRCI6IjYiLCJzdWIiOiJEYXZlLkJhdGlzdGEiLCJpYXQiOjE3MzU1NjY1NjEsImV4cCI6MTczNTU2NzE2MX0.nBOllQL40mmNN6WWXzfbMmqcwcuVJevci0MZw5JVLq4"
 					}
 				},
 				"method": "GET",
@@ -241,7 +241,7 @@
 				"auth": {
 					"type": "bearer",
 					"bearer": {
-						"token": "eyJhbGciOiJIUzI1NiJ9.eyJjbGllbnRUeXBlIjoidHJhaW5lciIsInVzZXJJRCI6IjIiLCJzdWIiOiJLYXRobGVlbi5DYXJyIiwiaWF0IjoxNzM1NTAyODY3LCJleHAiOjE3MzU1MDM0Njd9.Dkw7AJebay5XZ7VZfwj3AvVS3lszHauwtEDITb8achQ"
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJjbGllbnRUeXBlIjoidHJhaW5lciIsInVzZXJJRCI6IjIiLCJzdWIiOiJLYXRobGVlbi5DYXJyIiwiaWF0IjoxNzM1NTYxNjcyLCJleHAiOjE3MzU1NjIyNzJ9.S7x0UC1CJgHAwgeLoz-79HDlS00r4Typf-uYjYIfvkI"
 					}
 				},
 				"method": "POST",
@@ -249,6 +249,102 @@
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n        \"trainingName\": \"box\",\r\n        \"trainingDay\": \"2024-12-22\",\r\n        \"trainingType\": \"fitness\",\r\n        \"trainingDuration\": 120,\r\n        \"trainerUsername\": \"Kathleen.Carr\",\r\n        \"traineeUsername\": \"Dave.Batista\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/training"
+			},
+			"response": []
+		},
+		{
+			"name": "Create training",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJjbGllbnRUeXBlIjoidHJhaW5lciIsInVzZXJJRCI6IjIiLCJzdWIiOiJLYXRobGVlbi5DYXJyIiwiaWF0IjoxNzM1NTYxNjcyLCJleHAiOjE3MzU1NjIyNzJ9.S7x0UC1CJgHAwgeLoz-79HDlS00r4Typf-uYjYIfvkI"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"trainingName\": \"Dynamic stretch\",\r\n        \"trainingDay\": \"2022-10-12\",\r\n        \"trainingType\": \"stretching\",\r\n        \"trainingDuration\": 50,\r\n        \"trainerUsername\": \"Frazier.Richards\",\r\n        \"traineeUsername\": \"Dave.Batista\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/training"
+			},
+			"response": []
+		},
+		{
+			"name": "Create training",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJjbGllbnRUeXBlIjoidHJhaW5lciIsInVzZXJJRCI6IjIiLCJzdWIiOiJLYXRobGVlbi5DYXJyIiwiaWF0IjoxNzM1NTYyNTA3LCJleHAiOjE3MzU1NjMxMDd9.3ZxHhMCDxMwTG--o5Tm_gUvB-iD9roUY1HPzCobkhlo"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"trainingName\": \"hatha\",\r\n        \"trainingDay\": \"2023-10-02\",\r\n        \"trainingType\": \"yoga\",\r\n        \"trainingDuration\": 90,\r\n        \"trainerUsername\": \"Ward.Mejia\",\r\n        \"traineeUsername\": \"Dave.Batista\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/training"
+			},
+			"response": []
+		},
+		{
+			"name": "Create training",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJjbGllbnRUeXBlIjoidHJhaW5lciIsInVzZXJJRCI6IjIiLCJzdWIiOiJLYXRobGVlbi5DYXJyIiwiaWF0IjoxNzM1NTYyODcyLCJleHAiOjE3MzU1NjM0NzJ9.VXaU_r760LtKZx9tsF2Oa21dolHHTpZMARV6xyN7osg"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"trainingName\": \"resistance bands\",\r\n        \"trainingDay\": \"2023-01-22\",\r\n        \"trainingType\": \"resistance\",\r\n        \"trainingDuration\": 45,\r\n        \"trainerUsername\": \"Myrna.Estrada\",\r\n        \"traineeUsername\": \"Dave.Batista\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/training"
+			},
+			"response": []
+		},
+		{
+			"name": "Create training",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJjbGllbnRUeXBlIjoidHJhaW5lciIsInVzZXJJRCI6IjIiLCJzdWIiOiJLYXRobGVlbi5DYXJyIiwiaWF0IjoxNzM1NTY2OTA4LCJleHAiOjE3MzU1Njc1MDh9.s1BhJVUHkBhdxMG15llYvYjqczs1hpxRApXC3HNQxMs"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"trainingName\": \"resistance bands\",\r\n        \"trainingDay\": \"2023-01-22\",\r\n        \"trainingType\": \"resistance\",\r\n        \"trainingDuration\": 45,\r\n        \"trainerUsername\": \"Myrna.Estrada2\",\r\n        \"traineeUsername\": \"Dave.Batista\"\r\n    }",
 					"options": {
 						"raw": {
 							"language": "json"

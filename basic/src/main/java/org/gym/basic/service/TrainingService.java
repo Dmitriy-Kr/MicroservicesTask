@@ -51,7 +51,7 @@ public class TrainingService {
 
         } catch (Exception e) {
             logger.error("Fail to create training with trainingName {} ", trainingDto.getTrainingName());
-            throw new ServiceException("Fail to create training with trainingName " + trainingDto.getTrainingName(), e);
+            throw new ServiceException("Fail to create training with trainingName " + trainingDto.getTrainingName() + ". " + e.getMessage(), e);
         }
     }
 

@@ -51,8 +51,6 @@ public class TrainerWorkloadService {
 
             trainer.get().setStatus(request.isActive());
 
-            System.out.println("Status " + request.isActive());
-
             Year year = trainer.get().getYears()
                     .stream()
                     .filter(y -> y.getYearNumber() == request.getTrainingDate().toLocalDate().getYear())
