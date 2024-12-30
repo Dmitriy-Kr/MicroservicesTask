@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface WorkloadClient {
 
     @GetMapping("/workload")
-    Integer getDuration(@RequestParam("username") String username,
+    String getDuration(@RequestParam("username") String username,
                             @RequestParam("year") Integer year,
                             @RequestParam("month") Integer month);
 

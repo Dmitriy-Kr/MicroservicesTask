@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Month;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,11 +31,11 @@ public class TrainerWorkloadController {
 
     @GetMapping
     @ResponseBody
-    public int getDuration(@RequestParam("username") String username,
-                            @RequestParam("year") Integer year,
-                            @RequestParam("month") Integer month) {
-
-        return service.getDuration(username, year, month);
+    public String getDuration(@RequestParam("username") String username,
+                              @RequestParam("year") Integer year,
+                              @RequestParam("month") Integer month) {
+        int workload = service.getDuration(username, year, month);
+        return String.format("Workload for %s in %s %s is %s hrs %s min", username, Month.of(month), year, workload / 60, workload % 60);
 
     }
 

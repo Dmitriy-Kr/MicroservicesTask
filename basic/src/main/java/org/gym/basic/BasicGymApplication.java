@@ -31,13 +31,4 @@ public class BasicGymApplication {
 					.register(meterRegistry);
 		};
 	}
-
-	@Bean
-	public Customizer<Resilience4JCircuitBreakerFactory> defaultCustomizer() {
-		return factory -> factory.configureDefault(id -> new Resilience4JConfigBuilder(id)
-				.timeLimiterConfig(TimeLimiterConfig.custom().timeoutDuration(Duration.ofSeconds(3)).build())
-				.circuitBreakerConfig(CircuitBreakerConfig.ofDefaults())
-				.build());
-	}
-
 }

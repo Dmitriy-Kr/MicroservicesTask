@@ -1,5 +1,6 @@
 package org.gym.basic.controller;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.gym.basic.dto.TrainerCreatedDto;
 import org.gym.basic.dto.TrainerDto;
 import org.gym.basic.dto.TrainerTrainingDto;
@@ -30,12 +31,10 @@ import static org.gym.basic.utility.Validation.validateDate;
 public class TrainerController {
     private final TrainerService trainerService;
     private final WorkloadClient workloadClient;
-    private final CircuitBreakerFactory circuitBreakerFactory;
 
-    public TrainerController(TrainerService trainerService, WorkloadClient workloadClient, CircuitBreakerFactory circuitBreakerFactory) {
+    public TrainerController(TrainerService trainerService, WorkloadClient workloadClient) {
         this.trainerService = trainerService;
         this.workloadClient = workloadClient;
-        this.circuitBreakerFactory = circuitBreakerFactory;
     }
 
     @GetMapping
@@ -120,15 +119,17 @@ public class TrainerController {
 
     @GetMapping("/workload")
     @ResponseBody
+    @CircuitBreaker(name = "randomActivity", fallbackMethod = "fallback")
     @Operation(summary = "Get trainer workload")
-    public Integer getWorkload(@RequestParam("username") String username,
+    public String getWorkload(@RequestParam("username") String username,
                            @RequestParam("year") Integer year,
                            @RequestParam("month") Integer month) throws ServiceException, NoResourcePresentException, InvalidDataException {
 
-        return circuitBreakerFactory.create("slow").run(() -> workloadClient.getDuration(username, year, month), t -> {
-            Integer fallback = -1000000;
-            return fallback;
-        });
+        return  workloadClient.getDuration(username, year, month);
 
+    }
+
+    public String fallback(Throwable throwable) {
+        return "The service is temporarily unavailable.";
     }
 }
