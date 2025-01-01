@@ -50,9 +50,9 @@ public class WebSecurityConfig {
                 .sessionManagement(httpSecuritySessionManagementConfigurer ->
                         httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/").permitAll()
+                        .requestMatchers("/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/trainee", "/trainer").permitAll()
-                        .requestMatchers("/swagger-ui/**", "/actuator/**").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/actuator/**", "/v3/api-docs*/**").permitAll()
 //                        .requestMatchers(toH2Console()).permitAll()
                         .requestMatchers("/trainee/**").hasRole("TRAINEE")
                         .requestMatchers("/trainer/**").hasRole("TRAINER")
