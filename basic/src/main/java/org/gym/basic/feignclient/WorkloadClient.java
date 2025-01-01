@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(name = "workload")
+@FeignClient(name = "workload", fallback = WorkloadClientFallback.class)
 public interface WorkloadClient {
 
     @GetMapping("/workload")
@@ -16,5 +16,5 @@ public interface WorkloadClient {
                             @RequestParam("month") Integer month);
 
     @PostMapping("/workload")
-    void process(@RequestBody WorkloadRequest request);
+    String process(@RequestBody WorkloadRequest request);
 }

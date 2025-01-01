@@ -4,6 +4,7 @@ import org.gym.workload.dto.WorkloadRequest;
 import org.gym.workload.entity.Month;
 import org.gym.workload.entity.Trainer;
 import org.gym.workload.entity.Year;
+import org.gym.workload.exception.ServiceException;
 import org.gym.workload.repository.TrainerRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -75,7 +76,7 @@ class TrainerWorkloadServiceTest {
     }
 
     @Test
-    void testProcess_AddAction() {
+    void testProcess_AddAction() throws ServiceException {
         // Arrange
         WorkloadRequest request = new WorkloadRequest();
         request.setActionType(WorkloadRequest.ActionType.ADD);
@@ -101,7 +102,7 @@ class TrainerWorkloadServiceTest {
     }
 
     @Test
-    void testProcess_DeleteAction() {
+    void testProcess_DeleteAction() throws ServiceException {
         // Arrange
         WorkloadRequest request = new WorkloadRequest();
         request.setActionType(WorkloadRequest.ActionType.DELETE);

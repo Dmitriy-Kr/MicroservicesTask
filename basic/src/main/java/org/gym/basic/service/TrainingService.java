@@ -2,15 +2,19 @@ package org.gym.basic.service;
 
 import org.gym.basic.dto.TrainingDto;
 import org.gym.basic.entity.Training;
+import org.gym.basic.feignclient.WorkloadClient;
 import org.gym.basic.repository.TrainingRepository;
+import org.gym.workload.dto.WorkloadRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.time.LocalDate;
 
 @Service
+@Transactional(readOnly = true)
 public class TrainingService {
 
     private TrainingRepository trainingRepository;
@@ -18,15 +22,27 @@ public class TrainingService {
     private TrainerService trainerService;
     private TrainingTypeService trainingTypeService;
 
+    private final WorkloadClient workloadClient;
+
     private static Logger logger = LoggerFactory.getLogger( TrainingService.class);
 
-    public TrainingService(TrainingRepository trainingRepository, TraineeService traineeService, TrainerService trainerService, TrainingTypeService trainingTypeService) {
-        this.trainingRepository = trainingRepository;
-        this.traineeService = traineeService;
-        this.trainerService = trainerService;
+//    public TrainingService(TrainingRepository trainingRepository, TraineeService traineeService, TrainerService trainerService, TrainingTypeService trainingTypeService) {
+//        this.trainingRepository = trainingRepository;
+//        this.traineeService = traineeService;
+//        this.trainerService = trainerService;
+//        this.trainingTypeService = trainingTypeService;
+//    }
+
+
+    public TrainingService(WorkloadClient workloadClient, TrainingTypeService trainingTypeService, TrainerService trainerService, TraineeService traineeService, TrainingRepository trainingRepository) {
+        this.workloadClient = workloadClient;
         this.trainingTypeService = trainingTypeService;
+        this.trainerService = trainerService;
+        this.traineeService = traineeService;
+        this.trainingRepository = trainingRepository;
     }
 
+    @Transactional
     public Training create(TrainingDto trainingDto) throws ServiceException {
         try {
             Training training = new Training();
@@ -47,6 +63,12 @@ public class TrainingService {
             training.setTrainingDay(Date.valueOf(LocalDate.parse(trainingDto.getTrainingDay())));
             training.setTrainingDuration(trainingDto.getTrainingDuration());
 
+            String status = workloadClient.process(createRequest(training, WorkloadRequest.ActionType.ADD));
+
+            if(!"successful".equals(status)){
+                throw new RuntimeException(status);
+            }
+
             return trainingRepository.save(training);
 
         } catch (Exception e) {
@@ -60,7 +82,33 @@ public class TrainingService {
                 .orElseThrow(() -> new ServiceException("Fail to find training. No such training present in DB"));
     }
 
-    public void deleteTrainingById(long id){
+    @Transactional
+    public void deleteTrainingById(long id) throws ServiceException {
+        Training training = trainingRepository.findById(id)
+                .orElseThrow(() -> new ServiceException("Fail to find training. No such training present in DB"));
+
+        WorkloadRequest workloadRequest = createRequest(training, WorkloadRequest.ActionType.DELETE);
+
+        String status = workloadClient.process(workloadRequest);
+
+        if(!"successful".equals(status)){
+            throw new ServiceException(status);
+        }
+
         trainingRepository.deleteById(id);
+    }
+
+    private WorkloadRequest createRequest(Training training, WorkloadRequest.ActionType actionType) {
+        WorkloadRequest workloadRequest = new WorkloadRequest();
+
+        workloadRequest.setActionType(actionType);
+        workloadRequest.setTrainerUsername(training.getTrainer().getUser().getUsername());
+        workloadRequest.setTrainerFirstName(training.getTrainer().getUser().getFirstname());
+        workloadRequest.setTrainerLastName(training.getTrainer().getUser().getLastname());
+        workloadRequest.setActive(training.getTrainer().getUser().isActive());
+        workloadRequest.setTrainingDuration(training.getTrainingDuration());
+        workloadRequest.setTrainingDate(training.getTrainingDay());
+
+        return workloadRequest;
     }
 }

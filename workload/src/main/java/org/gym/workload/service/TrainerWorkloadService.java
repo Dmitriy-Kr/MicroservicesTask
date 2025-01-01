@@ -4,7 +4,10 @@ import org.gym.workload.dto.WorkloadRequest;
 import org.gym.workload.entity.Month;
 import org.gym.workload.entity.Trainer;
 import org.gym.workload.entity.Year;
+import org.gym.workload.exception.ServiceException;
 import org.gym.workload.repository.TrainerRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,22 +20,30 @@ import java.util.Optional;
 public class TrainerWorkloadService {
     private final TrainerRepository repository;
 
+    private static final Logger logger = LoggerFactory.getLogger( TrainerWorkloadService.class);
+
     public TrainerWorkloadService(TrainerRepository repository) {
         this.repository = repository;
     }
 
     @Transactional
-    public void process(WorkloadRequest request) {
-        switch (request.getActionType()) {
-            case ADD:
-                add(request);
-                break;
-            case DELETE:
-                delete(request);
+    public void process(WorkloadRequest request) throws ServiceException {
+        try {
+            switch (request.getActionType()) {
+                case ADD:
+                    add(request);
+                    break;
+                case DELETE:
+                    delete(request);
+            }
+
+        } catch (Exception ex) {
+            logger.error("Fail to process request");
+            throw new ServiceException("Fail to process request", ex);
         }
     }
 
-    public int getDuration(String username, Integer year, Integer month){
+    public int getDuration(String username, Integer year, Integer month) {
         Optional<Trainer> trainer = repository.findByUsername(username);
 
         return trainer.map(value -> value.getYears().stream()
@@ -56,13 +67,13 @@ public class TrainerWorkloadService {
                     .filter(y -> y.getYearNumber() == request.getTrainingDate().toLocalDate().getYear())
                     .findAny().orElse(new Year());
 
-            if(year.getYearNumber() != 0){
+            if (year.getYearNumber() != 0) {
 
                 Month month = year.getMonths().stream()
                         .filter(m -> m.getMonthNumber() == request.getTrainingDate().toLocalDate().getMonthValue())
                         .findAny().orElse(new Month());
 
-                if(month.getMonthNumber() != 0) {
+                if (month.getMonthNumber() != 0) {
 
                     month.increaseDurationBy(request.getTrainingDuration());
 

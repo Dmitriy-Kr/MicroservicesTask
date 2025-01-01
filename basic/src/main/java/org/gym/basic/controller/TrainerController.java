@@ -119,7 +119,7 @@ public class TrainerController {
 
     @GetMapping("/workload")
     @ResponseBody
-    @CircuitBreaker(name = "randomActivity", fallbackMethod = "fallback")
+//    @CircuitBreaker(name = "randomActivity", fallbackMethod = "fallback")
     @Operation(summary = "Get trainer workload")
     public String getWorkload(@RequestParam("username") String username,
                            @RequestParam("year") Integer year,
@@ -129,7 +129,7 @@ public class TrainerController {
 
     }
 
-    public String fallback(Throwable throwable) {
-        return "The service is temporarily unavailable.";
-    }
+//    public String fallback(Throwable throwable) {
+//        return "The service is temporarily unavailable.";
+//    }
 }

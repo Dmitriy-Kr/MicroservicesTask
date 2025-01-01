@@ -2,6 +2,7 @@ package org.gym.workload.controller;
 
 import jakarta.validation.Valid;
 import org.gym.workload.dto.WorkloadRequest;
+import org.gym.workload.exception.ServiceException;
 import org.gym.workload.service.TrainerWorkloadService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,8 +26,9 @@ public class TrainerWorkloadController {
     @PostMapping
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
-    public void process(@Valid @RequestBody WorkloadRequest request) {
+    public String process(@Valid @RequestBody WorkloadRequest request) throws ServiceException {
         service.process(request);
+        return "successful";
     }
 
     @GetMapping
@@ -49,6 +51,11 @@ public class TrainerWorkloadController {
                 .forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
 
         return ResponseEntity.badRequest().body(errors);
+    }
+
+    @ExceptionHandler(ServiceException.class)
+    public ResponseEntity<String> handleServiceExceptions(ServiceException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
     }
 
 }
