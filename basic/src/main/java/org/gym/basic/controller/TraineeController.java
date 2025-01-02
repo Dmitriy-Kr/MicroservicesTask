@@ -112,7 +112,7 @@ public class TraineeController {
     @ResponseBody
     @Operation(summary = "Update Trainee Profile")
     public TraineeDto update(@PathVariable Long id, @RequestBody TraineeDto traineeDto) throws ServiceException, InvalidDataException {
-        traineeDto.getUsername();
+        validateLogin(traineeDto.getUsername());
         validateName(traineeDto.getFirstname());
         validateName(traineeDto.getLastname());
         Trainee trainee = mapToTrainee(traineeDto);
