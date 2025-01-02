@@ -17,22 +17,14 @@ import java.time.LocalDate;
 @Transactional(readOnly = true)
 public class TrainingService {
 
-    private TrainingRepository trainingRepository;
-    private TraineeService traineeService;
-    private TrainerService trainerService;
-    private TrainingTypeService trainingTypeService;
+    private final TrainingRepository trainingRepository;
+    private final TraineeService traineeService;
+    private final TrainerService trainerService;
+    private final TrainingTypeService trainingTypeService;
 
     private final WorkloadClient workloadClient;
 
-    private static Logger logger = LoggerFactory.getLogger( TrainingService.class);
-
-//    public TrainingService(TrainingRepository trainingRepository, TraineeService traineeService, TrainerService trainerService, TrainingTypeService trainingTypeService) {
-//        this.trainingRepository = trainingRepository;
-//        this.traineeService = traineeService;
-//        this.trainerService = trainerService;
-//        this.trainingTypeService = trainingTypeService;
-//    }
-
+    private static final Logger logger = LoggerFactory.getLogger( TrainingService.class);
 
     public TrainingService(WorkloadClient workloadClient, TrainingTypeService trainingTypeService, TrainerService trainerService, TraineeService traineeService, TrainingRepository trainingRepository) {
         this.workloadClient = workloadClient;
