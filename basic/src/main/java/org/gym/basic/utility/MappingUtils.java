@@ -2,6 +2,7 @@ package org.gym.basic.utility;
 
 import org.gym.basic.dto.*;
 import org.gym.basic.entity.*;
+import org.gym.workload.dto.WorkloadRequest;
 
 import java.util.stream.Collectors;
 
@@ -118,13 +119,18 @@ public class MappingUtils {
         return dto;
     }
 
-//    public static TraineeCreatedDto mapToUserCreatedDto(Trainee trainee){
-//        TraineeCreatedDto dto = new TraineeCreatedDto();
-//
-//        dto.setUsername(trainee.getUser().getUsername());
-//        dto.setPassword(trainee.getUser().getPassword());
-//
-//        return dto;
-//    }
+    public static WorkloadRequest createRequest(Training training, WorkloadRequest.ActionType actionType) {
+        WorkloadRequest workloadRequest = new WorkloadRequest();
+
+        workloadRequest.setActionType(actionType);
+        workloadRequest.setTrainerUsername(training.getTrainer().getUser().getUsername());
+        workloadRequest.setTrainerFirstName(training.getTrainer().getUser().getFirstname());
+        workloadRequest.setTrainerLastName(training.getTrainer().getUser().getLastname());
+        workloadRequest.setActive(training.getTrainer().getUser().isActive());
+        workloadRequest.setTrainingDuration(training.getTrainingDuration());
+        workloadRequest.setTrainingDate(training.getTrainingDay());
+
+        return workloadRequest;
+    }
 
 }

@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Date;
 import java.time.LocalDate;
 
+import static org.gym.basic.utility.MappingUtils.createRequest;
+
 @Service
 @Transactional(readOnly = true)
 public class TrainingService {
@@ -90,17 +92,4 @@ public class TrainingService {
         trainingRepository.deleteById(id);
     }
 
-    private WorkloadRequest createRequest(Training training, WorkloadRequest.ActionType actionType) {
-        WorkloadRequest workloadRequest = new WorkloadRequest();
-
-        workloadRequest.setActionType(actionType);
-        workloadRequest.setTrainerUsername(training.getTrainer().getUser().getUsername());
-        workloadRequest.setTrainerFirstName(training.getTrainer().getUser().getFirstname());
-        workloadRequest.setTrainerLastName(training.getTrainer().getUser().getLastname());
-        workloadRequest.setActive(training.getTrainer().getUser().isActive());
-        workloadRequest.setTrainingDuration(training.getTrainingDuration());
-        workloadRequest.setTrainingDate(training.getTrainingDay());
-
-        return workloadRequest;
-    }
 }

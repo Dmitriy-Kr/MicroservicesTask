@@ -5,10 +5,13 @@ import org.gym.basic.entity.Trainee;
 import org.gym.basic.entity.Trainer;
 import org.gym.basic.entity.Training;
 import org.gym.basic.entity.User;
+import org.gym.basic.feignclient.WorkloadClient;
 import org.gym.basic.jwtbearerauth.JwtTokenService;
 import org.gym.basic.repository.TraineeRepository;
 import org.gym.basic.repository.TrainerRepository;
+import org.gym.basic.repository.TrainingRepository;
 import org.gym.basic.repository.UserRepository;
+import org.gym.workload.dto.WorkloadRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,6 +26,7 @@ import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import static org.gym.basic.utility.MappingUtils.createRequest;
 import static org.gym.basic.utility.PasswordGenerator.generatePassword;
 
 @Service
@@ -34,15 +38,19 @@ public class TraineeService {
     private final TrainerRepository trainerRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenService jwtTokenService;
+    private final WorkloadClient workloadClient;
+    private final TrainingRepository trainingRepository;
 
-    private static Logger logger = LoggerFactory.getLogger(TraineeService.class);
+    private static final Logger logger = LoggerFactory.getLogger(TraineeService.class);
 
-    public TraineeService(TraineeRepository traineeRepository, UserRepository userRepository, TrainerRepository trainerRepository, PasswordEncoder passwordEncoder, JwtTokenService jwtTokenService) {
+    public TraineeService(TraineeRepository traineeRepository, UserRepository userRepository, TrainerRepository trainerRepository, PasswordEncoder passwordEncoder, JwtTokenService jwtTokenService, WorkloadClient workloadClient, TrainingRepository trainingRepository) {
         this.traineeRepository = traineeRepository;
         this.userRepository = userRepository;
         this.trainerRepository = trainerRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtTokenService = jwtTokenService;
+        this.workloadClient = workloadClient;
+        this.trainingRepository = trainingRepository;
     }
 
     @Transactional
@@ -60,7 +68,7 @@ public class TraineeService {
 
         trainee.getUser().setToken(jwtToken);
 
-        return  new TraineeCreatedDto(trainee.getUser().getUsername(), password, jwtToken);
+        return new TraineeCreatedDto(trainee.getUser().getUsername(), password, jwtToken);
     }
 
     public Optional<Trainee> usernameAndPasswordMatching(String username, String password) throws ServiceException {
@@ -145,6 +153,24 @@ public class TraineeService {
         }
 
         try {
+            Date currentDate = new Date(System.currentTimeMillis());
+
+            List<Training> trainingList = traineeFromDB.get().getTrainings().stream()
+                    .filter(t -> t.getTrainingDay().after(currentDate))
+                    .toList();
+
+            for (Training training : trainingList) {
+                WorkloadRequest workloadRequest = createRequest(training, WorkloadRequest.ActionType.DELETE);
+
+                String status = workloadClient.process(workloadRequest);
+
+                if (!"successful".equals(status)) {
+                    throw new RuntimeException(status);
+                }
+
+                trainingRepository.deleteById(training.getId());
+            }
+
             traineeRepository.delete(traineeFromDB.get());
         } catch (Exception e) {
             logger.error("Fail to delete trainee with userName {} from DB ", username);
